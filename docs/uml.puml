@@ -1,0 +1,29 @@
+@startuml
+
+class User {
+  Id
+  Email
+  PasswordHash
+}
+
+class Task {
+  Id
+  Title
+  Description
+  Priority
+  EstimatedDuration
+  Deadline
+  Status
+}
+
+class TaskDependency {
+  Id
+  TaskId
+  DependsOnTaskId
+}
+
+User "1" -- "many" Task : owns
+Task "1" -- "many" TaskDependency : has
+TaskDependency "many" -- "1" Task : depends on
+
+@enduml
