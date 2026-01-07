@@ -16,6 +16,22 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+
+    if (!db.Users.Any())
+    {
+        db.Users.Add(new TaskManager.Api.Models.User
+        {
+            Email = "test@local",
+            PasswordHash = "test"
+        });
+        db.SaveChanges();
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
